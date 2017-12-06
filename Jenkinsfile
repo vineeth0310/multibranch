@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage(' Checkout stage') { 
             steps { 
-                sh 'ls''cat'
+                sh 'ls''cat'c
             }
         }
         stage('Build stage'){

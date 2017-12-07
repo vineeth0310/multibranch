@@ -1,4 +1,5 @@
 properties([[$class: 'GithubProjectProperty', displayName: '', projectUrlStr: 'https://github.com/vineeth0310/hooks/'], pipelineTriggers([githubPush()])])
+properties([pipelineTriggers([upstream('master')])])
 
 node {
  	// Clean workspace before doing anything

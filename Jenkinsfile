@@ -1,11 +1,7 @@
 properties([[$class: 'GithubProjectProperty', displayName: '', projectUrlStr: 'https://github.com/vineeth0310/hooks/'], pipelineTriggers([githubPush()])])
 
 pipeline {
-    agent {
-        label{
-            label 'Slavenode'
-        }
-    }
+    agent any
              parameters {
                             string(defaultValue: "default", description: 'Select Branch here ', name: 'Branch')
                            // choices are newline separated

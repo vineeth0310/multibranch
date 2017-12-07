@@ -1,23 +1,33 @@
-properties([[$class: 'GithubProjectProperty', displayName: '', projectUrlStr: 'https://github.com/vineeth0310/multibranch.git/'], pipelineTriggers([upstream('master')])])
+properties([[$class: 'GithubProjectProperty', displayName: '', projectUrlStr: 'https://github.com/vineeth0310/hooks/'], pipelineTriggers([githubPush()])])
 
-pipeline {
-    agent any 
+node {
+ 	// Clean workspace before doing anything
+    deleteDir()
 
-    stages {
-        stage(' Checkout stage') { 
-            steps { 
-                sh 'ls' 
-            }
+    try {
+        stage ('clone') {
+        	checkout scm
         }
-        stage('Build stage'){
-            steps {
-                sh 'pwd' 
-            }
+        stage ('Build') {
+        	sh "echo 'shell scripts to build the project nnn.....'"
+		
         }
-        stage('starting database rebuild') {
-            steps {
-                sh 'ls'
-            }
+        stage ('Tests') {
+	        parallel 'static': {
+	            sh "echo 'shell scripts to run the static tests...'"
+	        },
+	        'unit': {
+	            sh "echo 'shell scripts to run the unit tests...'"
+	        },
+	        'integration': {
+	            sh "echo 'shell scripts to run integration tests...'"
+	        }
         }
+      	stage ('Deploy') {
+            sh "echo 'shell scripts to deploy to server...'"
+      	}
+    } catch (err) {
+        currentBuild.result = 'FAILED'
+        throw err
     }
 }
